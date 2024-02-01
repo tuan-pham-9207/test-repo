@@ -53,3 +53,14 @@ jobs:
           dotnet build --configuration Release ./WebApplication1
           
           .sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+  sonarqube-check:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check SonarQube analysis status
+      id: check-sonar
+      run: |
+        SONAR_STATUS=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: -X GET "https://sonarcloud.io/api/qualitygates/project_status?projectKey=tuan-pham-9207_test-repo" | jq -r .projectStatus.status)
+        echo "SonarQube status: $SONAR_STATUS"
+        echo "::set-output name=sonar_status::$SONAR_STATUS"
