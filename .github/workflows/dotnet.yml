@@ -43,6 +43,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
+          echo "Current directory: ${{ github.workspace }}"
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"tuan-pham-9207_test-repo" /o:"tuan-pham-9207" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build --project .\WebApplication1
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
